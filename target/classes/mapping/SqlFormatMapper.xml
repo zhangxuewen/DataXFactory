@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.dxf.dao.SqlFormatMapper">
+
+	<!-- 保存sql语句 -->
+	<insert id="saveSqlFormat" parameterType="com.hz.dxf.model.SqlFormatModel">
+		insert into 
+			dx_sql_set(id,sqlFormat,createTime,status)
+		values(#{id},#{sqlFormat},#{createTime},#{status})
+	</insert>
+	
+	<!-- 获取sql列表 -->
+	<select id="querySqlFormat" parameterType="java.util.Map" resultMap="sqlFormatMap">
+		select id,sqlFormat,createTime,status
+		from dx_sql_set
+		<where>
+			<if test="id != null and id !=''">id = #{id}</if>
+		</where>
+	</select>
+	<resultMap type="com.hz.dxf.model.SqlFormatModel" id="sqlFormatMap">
+		<result column="id" property="id"/>
+		<result column="sqlFormat" property="sqlFormat"/>
+		<result column="createTime" property="createTime"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<!-- 更新sql语句信息 -->
+	<update id="updateSqlFormat" parameterType="java.util.Map">
+		update dx_sql_set 
+		<set>
+			<if test="createTime != null and createTime !=''"> createTime = #{createTime}</if>
+			<if test="status >= 0"> status = #{status}</if>
+		</set>
+		<where>
+			<if test="id != null and id != ''"> id = #{id}</if>
+		</where>
+	</update>
+
+</mapper>

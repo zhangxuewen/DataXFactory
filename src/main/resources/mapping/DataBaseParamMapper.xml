@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hz.dxf.dao.DataBaseParamMapper">
+
+	<!-- 添加参数 -->
+	<insert id="saveDataBaseParam" parameterType="com.hz.dxf.dao.model.DataBaseParamModel">
+		insert into 
+			dx_database_param(id,dbType,dbName,address,port,userName,password,driver,url,status)
+		values(#{id},#{dbType},#{dbName},#{address},#{port},#{userName},#{password},#{driver},#{url},#{status})
+	</insert>
+	
+	<!-- 更新参数信息 -->
+	<update id="updateDataBaseParam" parameterType="com.hz.dxf.dao.model.DataBaseParamModel">
+		update dx_database_param
+		<set>
+			<if test="dbName != null and dbName != ''">dbName = #{dbName},</if>
+			<if test="address != null and address != ''">address = #{address},</if>
+			<if test="port != null and port != ''">port = #{port},</if>
+			<if test="userName != null and userName != ''">userName = #{userName},</if>
+			<if test="password != null and password != ''">password = #{password},</if>
+			<if test="driver != null and driver != ''">driver = #{driver},</if>
+			<if test="url != null and url != ''">url = #{url},</if>
+			<if test="status >=0 ">status = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- 获取参数信息 -->
+	<select id="queryDataBaseParam" parameterType="java.util.Map" resultMap="dataBaseParamMap">
+		select id,dbType,dbName,address,port,userName,password,status,url,driver
+		from dx_database_param
+		<where>
+			<if test="id != null and id !=''">status > 0 and id = #{id}</if>
+		</where> 
+	</select>
+	
+	<select id="checkDataBaseParam" parameterType="java.util.Map" resultMap="dataBaseParamMap">
+		select id,dbType,dbName,address,port,userName,password,status,url,driver
+		from dx_database_param
+		<where>
+			<if test="dbType != null and dbType !=''"> dbType = #{dbType}</if>
+			<if test="dbName != null and dbName !=''"> and dbName = #{dbName}</if>
+			<if test="address != null and address !=''"> and address = #{address}</if>
+			<if test="port != null and port !=''"> and port = #{port}</if>
+			<if test="userName != null and userName !=''"> and userName = #{userName}</if>
+			<if test="password != null and password !=''"> and password = #{password}</if>
+		</where> 
+	</select>
+	
+	<resultMap type="com.hz.dxf.dao.model.DataBaseParamModel" id="dataBaseParamMap">
+		<result column="id" property="id"/>
+		<result column="dbType" property="dbType"/>
+		<result column="dbName" property="dbName"/>
+		<result column="address" property="address"/>
+		<result column="port" property="port"/>
+		<result column="userName" property="userName"/>
+		<result column="password" property="password"/>
+		<result column="driver" property="driver"/>
+		<result column="url" property="url"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+
+</mapper>
